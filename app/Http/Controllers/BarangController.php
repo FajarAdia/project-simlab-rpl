@@ -33,4 +33,30 @@ public function store(Request $request)
 
     return redirect()->route('barang.index')->with('success', 'Data barang berhasil ditambahkan!');
 }
+
+public function index()
+{
+    // Mengambil data barang beserta relasi kategori, diurutkan dari terbaru
+    $barangs = Barang::with('kategori')->latest()->get();
+    return view('barang.index', compact('barangs'));
+}
+
+public function dashboard()
+{
+    // Menghitung metrik total aset untuk ringkasan dashboard
+    $totalBarang = Barang::count();
+    $totalStok = Barang::sum('stok');
+    $barangTersedia = Barang::where('status', 'Tersedia')->count();
+    $barangDipinjam = Barang::where('status', 'Dipinjam')->count();
+    $barangMaintenance = Barang::where('status', 'Maintenance')->count();
+
+    return view('dashboard', compact(
+        'totalBarang', 
+        'totalStok', 
+        'barangTersedia', 
+        'barangDipinjam', 
+        'barangMaintenance'
+    ));
+}
+
 }
