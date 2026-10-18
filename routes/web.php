@@ -1,7 +1,8 @@
-<?php
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BarangController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Rute untuk halaman Dashboard Metrik Aset
+Route::get('/', [BarangController::class, 'dashboard'])->name('dashboard');
+
+// Rute Resource untuk Operasi CRUD Barang (index, create, store, edit, update, destroy)
+Route::resource('barang', BarangController::class);
